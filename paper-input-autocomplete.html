@@ -50,8 +50,8 @@ Example:
   <template>
     <div class="input-wrapper">
       <paper-icon-button icon="arrow-back"></paper-icon-button>
-      <paper-input label="{{label}}" no-label-float></paper-input>
-      <paper-icon-button icon="clear"></paper-icon-button>
+      <paper-input id="input" label="{{label}}" no-label-float></paper-input>
+      <paper-icon-button icon="clear" on-click="clear"></paper-icon-button>
     </div>
   </template>
 </dom-module>
@@ -125,31 +125,10 @@ Example:
     // Element Behavior
 
     /**
-     * The `seed-element-lasers` event is fired whenever `fireLasers` is called.
-     *
-     * @event seed-element-lasers
-     * @detail {{sound: String}}
+     * Clears the input text
      */
-
-    /**
-     * Sometimes it's just nice to say hi.
-     *
-     * @param {string} greeting A positive greeting.
-     * @return {string} The full greeting.
-     */
-    sayHello: function(greeting) {
-      var response = greeting || 'Hello World!';
-      return 'seed-element says, ' + response;
-    },
-
-    /**
-     * Attempts to destroy this element's enemies with an any beam of light!
-     *
-     * Or, at least, dispatches an event in the vain hope that someone else will
-     * do the zapping.
-     */
-    fireLasers: function() {
-      this.fire('seed-element-lasers', {sound: 'Pew pew!'});
+    clear : function(){
+      this.$.input.value = '';
     }
 
   });
