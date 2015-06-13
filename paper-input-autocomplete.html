@@ -35,12 +35,6 @@ Example:
     .input-wrapper {
       @apply(--layout-horizontal);
     }
-/*
-    .input-wrapper paper-icon-button[icon="arrow-back"],
-    .input-wrapper paper-icon-button[icon="clear"] {
-      float: left;
-      width: 4%;
-    }*/
 
     .input-wrapper paper-input {
       @apply(--layout-flex);
@@ -50,8 +44,11 @@ Example:
   <template>
     <div class="input-wrapper">
       <paper-icon-button icon="arrow-back"></paper-icon-button>
-      <paper-input label="{{label}}" no-label-float></paper-input>
+      <paper-input label="{{label}}" no-label-float on-keyup="handleSuggestions"></paper-input>
       <paper-icon-button icon="clear"></paper-icon-button>
+    </div>
+    <div class="suggestions-wrapper">
+
     </div>
   </template>
 </dom-module>
@@ -61,12 +58,25 @@ Example:
 
     is: 'paper-input-autocomplete',
 
+    suggestions: [],
+
     properties: {
 
       /**
        * `label` Text to display as the input label
        */
       label: String,
+
+      /**
+       * `source` Array of objects with the options to execute the autocomplete feature
+       */
+      source: Array,
+
+      /**
+       * `searchProperty` Property of the source objects that will be used to execute 
+       * the autocomplete feature
+       */
+      searchProperty: String,
 
       /**
        * Describes the author of the element, but is really just an excuse to
@@ -93,6 +103,15 @@ Example:
         }
       }
 
+    },
+
+    /**
+     * Event fired when the user types in the input field.
+     * 
+     * @param {string} event fired
+     */
+    handleSuggestions : function(event) {
+      console.log(event.target.value);
     },
 
     // Element Lifecycle
@@ -140,16 +159,6 @@ Example:
     sayHello: function(greeting) {
       var response = greeting || 'Hello World!';
       return 'seed-element says, ' + response;
-    },
-
-    /**
-     * Attempts to destroy this element's enemies with an any beam of light!
-     *
-     * Or, at least, dispatches an event in the vain hope that someone else will
-     * do the zapping.
-     */
-    fireLasers: function() {
-      this.fire('seed-element-lasers', {sound: 'Pew pew!'});
     }
 
   });
