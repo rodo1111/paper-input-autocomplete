@@ -47,8 +47,15 @@ Example:
     }
 
     #suggestionsWrapper {
-      margin: 0 25px;
-      /*display: none;*/
+      display: none;
+      background-color: white;
+      padding: 0 25px;
+    }
+
+    :host[suggestions-in-overlay="true"] #suggestionsWrapper {
+      width: 100%;
+      position: absolute;
+      z-index: 1000;
     }
 
     paper-item {
@@ -106,6 +113,11 @@ Example:
       value: Object,
 
       /**
+       * `suggestionsInOverlay` Display the suggestions in an overlay above the next elements
+       */
+      suggestionsInOverlay: Boolean,
+
+      /**
        * `_suggestions` Array with the actual suggestions to display
        */
       _suggestions: Array
@@ -154,6 +166,7 @@ Example:
     _clear : function() {
       this.$.input.value = '';
       this.$.clear.style.display = 'none';
+      this.value = undefined;
       this._hideSuggestionsWrapper();
     },
 
@@ -211,10 +224,14 @@ Example:
      */
     _selectSuggestion : function(event) {
       var selectedOption = this._suggestions[event.model.index];
+      var self = this;
 
       this.$.input.value = selectedOption.text;
       this.value = selectedOption.value;
-      this._hideSuggestionsWrapper();
+
+      setTimeout(function() {
+        self._hideSuggestionsWrapper();
+      }, 300);
     },
 
     /**
