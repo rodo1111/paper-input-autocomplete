@@ -12,17 +12,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>seed-element Demo</title>
+    <title>Paper Input Autocomplete Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../paper-input-autocomplete.html">
   </head>
   <body>
 
-    <p>An example of <code>&lt;paper-input-autocomplete&gt;</code>:</p>
+    <paper-input-autocomplete id="fruits" label="Fruits"></paper-input-autocomplete>
+    <button onclick="whichFruit()">Which fruit?</button>
 
-    <paper-input-autocomplete label="Fruits"></paper-input-autocomplete>
+    <br/><br/><br/><br/>
+
+    <paper-input-autocomplete id="vegetables" label="Vegetables" search-property="name"></paper-input-autocomplete>
+    <button onclick="whichVegetable()">Which vegetable?</button>
 
     <script>
+      document.getElementById('fruits').source = ['Apple', 'Orange', 'Bananas'];
+      document.getElementById('vegetables').source = [
+        {name: 'Cabbage', scientificName: 'Brassica oleracea'},
+        {name: 'Carrot', scientificName: 'Daucus carota'},
+        {name: 'Potato', scientificName: 'Solanum tuberosum'},
+      ];
+
+      function whichFruit() {
+        alert(document.getElementById('fruits').getValue());
+      }
+
+      function whichVegetable() {
+        alert(JSON.stringify(document.getElementById('vegetables').getValue()));
+      }
     </script>
 
   </body>

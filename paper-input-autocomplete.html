@@ -99,10 +99,7 @@ Example:
       /**
        * `suggestions` Array with the actual suggestions to display
        */
-      _suggestions: {
-        type: Array,
-        value: [{id: 0, text: "0"}, {id: 1, text: "1"}, {id: 2, text: "2"}, {id: 3, text: "3"}]
-      },
+      _suggestions: Array,
 
       /**
        * `value` selected object from the suggestions
@@ -163,15 +160,40 @@ Example:
     /**
      * Event fired when the user types in the input field.
      * 
-     * @param {Object} event fired
+     * @param {string} event fired
      */
     _handleSuggestions : function(event) {
-      console.log(event.target.value);
+      var value = event.target.value;
 
-      if(event.target.value && event.target.value.length > 0){
+      if(value && value.length > 0){
+        value = value.toLowerCase();
+
+        // Shows the clear button.
         this.$.clear.style.display = 'block';
+        
+        // Search for the word in the source properties.
+        if(this.source && this.source.length > 0){
+          this._suggestions = [];
+          var length = this.source.length
+          var hasSearchProperty = this.searchProperty != null;
+          for(var i = 0; i < length; i++){
+            var item = this.source[i];
+            if(hasSearchProperty){
+              item = this.source[i][this.searchProperty];
+            }
+            if(item.toLowerCase().includes(value)){
+              // Adds the item to the suggestions list.
+              this.push('_suggestions', {text : item , value : this.source[i]});
+            }
+          }
+
+          if (this._suggestions.length > 0) {
+            this.$.suggestionsWrapper.style.display = 'block';
+          }
+        }
       }else{
         this.$.clear.style.display = 'none';
+        this._suggestions = [];
       }
     },
 
@@ -181,15 +203,18 @@ Example:
      * @param {Object} event fired
      */
     _selectSuggestion : function(event) {
-      this.value = this._suggestions[event.model.index];
-      this.$.input.value = this.value.text;
+      var selectedOption = this._suggestions[event.model.index];
+      
+      this.$.input.value = selectedOption.text;
+      this._value = selectedOption.value;
+      this._hideSuggestionsWrapper();
     },
 
     /**
      * Return the selected suggestion
      */
     getValue : function() {
-      return this.value;
+      return this._value;
     }
 
   });
