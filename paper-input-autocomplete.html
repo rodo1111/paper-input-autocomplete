@@ -49,13 +49,17 @@ Example:
     paper-item {
       position: relative;
     }
+
+    #clear{
+      display: none;
+    }
   </style>
 
   <template>
     <div class="input-wrapper">
       <paper-icon-button icon="arrow-back"></paper-icon-button>
       <paper-input id="input" label="{{label}}" no-label-float on-keyup="handleSuggestions"></paper-input>
-      <paper-icon-button icon="clear" on-click="clear"></paper-icon-button>
+      <paper-icon-button id="clear" icon="clear" on-click="clear"></paper-icon-button>
     </div>
     <div class="suggestions-wrapper">
       <template is="dom-repeat" items="{{suggestions}}">
@@ -130,6 +134,12 @@ Example:
      */
     handleSuggestions : function(event) {
       console.log(event.target.value);
+
+      if(event.target.value && event.target.value.length > 0){
+        this.$.clear.style.display = 'block';
+      }else{
+        this.$.clear.style.display = 'none';
+      }
     },
 
     // Element Lifecycle
@@ -166,6 +176,7 @@ Example:
      */
     clear : function() {
       this.$.input.value = '';
+      this.$.clear.style.display = 'none';
     }
 
   });
