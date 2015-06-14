@@ -12,6 +12,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
 
 <!--
 Paper Input Autocomplete field to offer a type-ahead functionality
@@ -39,6 +41,14 @@ Example:
     .input-wrapper paper-input {
       @apply(--layout-flex);
     }
+
+    .suggestions-wrapper {
+      margin: 0 25px;
+    }
+
+    paper-item {
+      position: relative;
+    }
   </style>
 
   <template>
@@ -48,7 +58,12 @@ Example:
       <paper-icon-button icon="clear" on-click="clear"></paper-icon-button>
     </div>
     <div class="suggestions-wrapper">
-
+      <template is="dom-repeat" items="{{suggestions}}">
+        <paper-item>
+          <div>Item</div>
+          <paper-ripple></paper-ripple>
+        </paper-item>
+      </template>
     </div>
   </template>
 </dom-module>
@@ -57,8 +72,6 @@ Example:
   Polymer({
 
     is: 'paper-input-autocomplete',
-
-    suggestions: [],
 
     properties: {
 
@@ -77,6 +90,11 @@ Example:
        * the autocomplete feature
        */
       searchProperty: String,
+
+      /**
+       * `suggestions` Array with the actual suggestions to display
+       */
+      suggestions: Array,
 
       /**
        * Describes the author of the element, but is really just an excuse to
