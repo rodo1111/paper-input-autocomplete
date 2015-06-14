@@ -42,8 +42,9 @@ Example:
       @apply(--layout-flex);
     }
 
-    .suggestions-wrapper {
+    #suggestionsWrapper {
       margin: 0 25px;
+      /*display: none;*/
     }
 
     paper-item {
@@ -57,14 +58,14 @@ Example:
 
   <template>
     <div class="input-wrapper">
-      <paper-icon-button icon="arrow-back"></paper-icon-button>
-      <paper-input id="input" label="{{label}}" no-label-float on-keyup="handleSuggestions"></paper-input>
-      <paper-icon-button id="clear" icon="clear" on-click="clear"></paper-icon-button>
+      <paper-icon-button icon="arrow-back" on-click="_back"></paper-icon-button>
+      <paper-input id="input" label="{{label}}" no-label-float on-keyup="_handleSuggestions"></paper-input>
+      <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
-    <div class="suggestions-wrapper">
-      <template is="dom-repeat" items="{{suggestions}}">
-        <paper-item>
-          <div>{{item}}</div>
+    <div id="suggestionsWrapper">
+      <template is="dom-repeat" items="{{_suggestions}}">
+        <paper-item on-click="_selectSuggestion">
+          <div>{{item.text}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -98,48 +99,16 @@ Example:
       /**
        * `suggestions` Array with the actual suggestions to display
        */
-      suggestions: Array,
+      _suggestions: {
+        type: Array,
+        value: [{id: 0, text: "0"}, {id: 1, text: "1"}, {id: 2, text: "2"}, {id: 3, text: "3"}]
+      },
 
       /**
-       * Describes the author of the element, but is really just an excuse to
-       * show off JSDoc annotations.
-       *
-       * @type {{name: string, image: string}}
+       * `value` selected object from the suggestions
        */
-      author: {
-        type: Object,
-        // Use `value` to provides a default value for a property, by setting it
-        // on your element's prototype.
-        //
-        // If you provide a function, as we do here, Polymer will call that
-        // _per element instance_.
-        //
-        // We do that to ensure that each element gets its own copy of the
-        // value, rather than having it shared across all instances (via the
-        // prototype).
-        value: function() {
-          return {
-            name:  'Dimitri Glazkov',
-            image: 'http://addyosmani.com/blog/wp-content/uploads/2013/04/unicorn.jpg',
-          };
-        }
-      }
+      _value: Object
 
-    },
-
-    /**
-     * Event fired when the user types in the input field.
-     * 
-     * @param {string} event fired
-     */
-    handleSuggestions : function(event) {
-      console.log(event.target.value);
-
-      if(event.target.value && event.target.value.length > 0){
-        this.$.clear.style.display = 'block';
-      }else{
-        this.$.clear.style.display = 'none';
-      }
     },
 
     // Element Lifecycle
@@ -172,11 +141,55 @@ Example:
     // Element Behavior
 
     /**
+     * Handles the Back icon click
+     */
+    _back : function() {
+      this._hideSuggestionsWrapper();
+    },
+
+    /**
      * Clears the input text
      */
-    clear : function() {
+    _clear : function() {
       this.$.input.value = '';
       this.$.clear.style.display = 'none';
+      this._hideSuggestionsWrapper();
+    },
+
+    _hideSuggestionsWrapper: function() {
+      this.$.suggestionsWrapper.style.display = 'none';
+    },
+
+    /**
+     * Event fired when the user types in the input field.
+     * 
+     * @param {Object} event fired
+     */
+    _handleSuggestions : function(event) {
+      console.log(event.target.value);
+
+      if(event.target.value && event.target.value.length > 0){
+        this.$.clear.style.display = 'block';
+      }else{
+        this.$.clear.style.display = 'none';
+      }
+    },
+
+    /**
+     * Event fired when the user selects a suggestion
+     *
+     * @param {Object} event fired
+     */
+    _selectSuggestion : function(event) {
+      this.value = this._suggestions[event.model.index];
+      this.$.input.value = this.value.text;
+    },
+
+    /**
+     * Return the selected suggestion
+     */
+    getValue : function() {
+      return this.value;
     }
 
   });
