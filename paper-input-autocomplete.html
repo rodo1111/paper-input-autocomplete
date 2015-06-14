@@ -117,10 +117,32 @@ Example:
     handleSuggestions : function(event) {
       console.log(event.target.value);
 
-      if(event.target.value && event.target.value.length > 0){
+      var value = event.target.value;
+
+      if(value && value.length > 0){
+        // Shows the clear button.
         this.$.clear.style.display = 'block';
+        
+        // Search for the word in the source properties.
+        if(this.source && this.source.length > 0){
+          this.suggestions = [];
+          var length = this.source.length
+          var hasSearchProperty = this.searchProperty != null;
+          for(var i = 0; i < length; i++){
+            var item = this.source[i];
+            if(hasSearchProperty){
+              item = this.source[i][this.searchProperty];
+            }
+            if(item.toLowerCase().includes(value.toLowerCase())){
+              // Adds the item to the suggestions list.
+              this.suggestions.push({text : item , value : this.source[i]});
+              console.log({text : item , value : this.source[i]});
+            }
+          }
+        }
       }else{
         this.$.clear.style.display = 'none';
+        this.suggestions = [];
       }
     },
 
