@@ -20,7 +20,11 @@ Paper Input Autocomplete field to offer a type-ahead functionality
 
 Example:
 
-    <paper-input-autocomplete></paper-input-autocomplete>
+    <paper-input-autocomplete id="fruits" label="Fruits"></paper-input-autocomplete>
+
+    <script>
+      document.getElementById('fruits').source = ['Apple', 'Orange', 'Bananas'];
+    </script>
 
 @group Paper Elements
 @element paper-input-autocomplete
@@ -97,14 +101,14 @@ Example:
       searchProperty: String,
 
       /**
-       * `suggestions` Array with the actual suggestions to display
+       * `value` Selected object from the suggestions
        */
-      _suggestions: Array,
+      value: Object,
 
       /**
-       * `value` selected object from the suggestions
+       * `_suggestions` Array with the actual suggestions to display
        */
-      _value: Object
+      _suggestions: Array
 
     },
 
@@ -153,6 +157,9 @@ Example:
       this._hideSuggestionsWrapper();
     },
 
+    /**
+     * Hide the suggestions wrapper
+     */
     _hideSuggestionsWrapper: function() {
       this.$.suggestionsWrapper.style.display = 'none';
     },
@@ -204,9 +211,9 @@ Example:
      */
     _selectSuggestion : function(event) {
       var selectedOption = this._suggestions[event.model.index];
-      
+
       this.$.input.value = selectedOption.text;
-      this._value = selectedOption.value;
+      this.value = selectedOption.value;
       this._hideSuggestionsWrapper();
     },
 
@@ -214,7 +221,7 @@ Example:
      * Return the selected suggestion
      */
     getValue : function() {
-      return this._value;
+      return this.value;
     }
 
   });
