@@ -49,7 +49,6 @@ Example:
     #suggestionsWrapper {
       display: none;
       background-color: white;
-      padding: 0 25px;
     }
 
     :host[suggestions-in-overlay="true"] #suggestionsWrapper {
@@ -69,7 +68,6 @@ Example:
 
   <template>
     <div class="input-wrapper">
-      <paper-icon-button icon="arrow-back" on-click="_back"></paper-icon-button>
       <paper-input id="input" label="{{label}}" no-label-float on-keyup="_handleSuggestions"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
@@ -152,13 +150,6 @@ Example:
     },
 
     // Element Behavior
-
-    /**
-     * Handles the Back icon click
-     */
-    _back : function() {
-      this._hideSuggestionsWrapper();
-    },
 
     /**
      * Clears the input text
