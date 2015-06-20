@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-material/paper-material.html">
 
 <!--
 Paper Input Autocomplete field to offer a type-ahead functionality
@@ -36,6 +37,7 @@ Example:
     :host {
       display: block;
       box-sizing: border-box;
+      position: relative;
     }
 
     .input-wrapper {
@@ -71,14 +73,14 @@ Example:
       <paper-input id="input" label="{{label}}" no-label-float on-keyup="_handleSuggestions"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
-    <div id="suggestionsWrapper">
+    <paper-material elevation="1" id="suggestionsWrapper">
       <template is="dom-repeat" items="{{_suggestions}}">
         <paper-item on-click="_selectSuggestion">
           <div>{{item.text}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
-    </div>
+    </paper-material>
   </template>
 </dom-module>
 
