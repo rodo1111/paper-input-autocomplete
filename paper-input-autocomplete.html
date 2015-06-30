@@ -110,7 +110,10 @@ Example:
       /**
        * `value` Selected object from the suggestions
        */
-      value: Object,
+      value: {
+        type: Object,
+        notify: true
+      },
 
       /**
        * `suggestionsInOverlay` Display the suggestions in an overlay above the next elements
