@@ -179,6 +179,7 @@ Example:
      * @param {string} event fired
      */
     _handleSuggestions : function(event) {
+      this.value = this.$.input.value; 
       var value = event.target.value;
 
       if(value && value.length > 0){
