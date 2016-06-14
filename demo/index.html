@@ -20,11 +20,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-input-autocomplete id="fruits" label="Fruits" suggestions-in-overlay="true"></paper-input-autocomplete>
     <button onclick="whichFruit()">Which fruit?</button>
+    <button onclick="clearFruit()">Clear the selected fruit</button>
 
     <br/><br/><br/><br/>
 
     <paper-input-autocomplete id="vegetables" label="Vegetables" search-property="name"></paper-input-autocomplete>
     <button onclick="whichVegetable()">Which vegetable?</button>
+    <button onclick="clearVegetable()">Clear the selected vegetable</button>
 
     <script>
       document.getElementById('fruits').source = ['Apple', 'Orange', 'Bananas'];
@@ -38,8 +40,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         alert(document.getElementById('fruits').getValue());
       }
 
+      function clearFruit() {
+        document.getElementById('fruits').clear();
+      }
+
       function whichVegetable() {
         alert(JSON.stringify(document.getElementById('vegetables').getValue()));
+      }
+
+      function clearVegetable() {
+        document.getElementById('vegetables').clear();
       }
     </script>
 
