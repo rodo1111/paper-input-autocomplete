@@ -98,7 +98,7 @@ Example:
         value="{{inputValue}}" 
         no-label-float="{{noLabelFloat}}" 
         always-float-label="{{alwaysFloatLabel}}"
-        display-options-on-focus="{{displayElementsOnFocus}}"
+        display-options-on-focus="{{displayOptionsOnFocus}}"
         on-focus="_onFocus"
         on-blur="_onBlur"
       ></paper-input>
@@ -361,7 +361,7 @@ Example:
       /**
        * Display all the options when the input is empty and when the user focus the input.
        */
-      displayElementsOnFocus: {
+      displayOptionsOnFocus: {
           type: Boolean,
           value: false
       }
@@ -482,7 +482,7 @@ Example:
     },
 
     _onFocus: function() {
-      if (this.displayElementsOnFocus && (this.value === '' || this.value === undefined)) {
+      if (this.displayOptionsOnFocus && (this.value === '' || this.value === undefined)) {
         this.value = '';
         this._handleSuggestionsAux(this.value);
       }
