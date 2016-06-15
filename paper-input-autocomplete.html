@@ -98,8 +98,11 @@ Example:
         value="{{inputValue}}" 
         no-label-float="{{noLabelFloat}}" 
         always-float-label="{{alwaysFloatLabel}}"
+        display-options-on-focus="{{displayElementsOnFocus}}"
+        on-focus="_onFocus"
+        on-blur="_onBlur"
       ></paper-input>
-      <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+      <paper-icon-button id="clear" icon="clear" on-click="clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
       <template is="dom-repeat" items="{{_suggestions}}">
@@ -353,6 +356,14 @@ Example:
       _ariaDescribedBy: {
           type: String,
           value: ''
+      },
+
+      /**
+       * Display all the options when the input is empty and when the user focus the input.
+       */
+      displayElementsOnFocus: {
+          type: Boolean,
+          value: false
       }
 
     },
@@ -409,38 +420,47 @@ Example:
      * @param {string} event fired
      */
     _handleSuggestions : function(event) {
-      this.value = this.$.input.value; 
+      this.value = this.$.input.value;
       var value = event.target.value;
 
       if(value && value.length > 0){
-        value = value.toLowerCase();
-
-        // Shows the clear button.
-        this.$.clear.style.display = 'block';
-        
-        // Search for the word in the source properties.
-        if(this.source && this.source.length > 0){
-          this._suggestions = [];
-          var length = this.source.length
-          var hasSearchProperty = this.searchProperty != null;
-          for(var i = 0; i < length; i++){
-            var item = this.source[i];
-            if(hasSearchProperty){
-              item = this.source[i][this.searchProperty];
-            }
-            if(item.toLowerCase().includes(value)){
-              // Adds the item to the suggestions list.
-              this.push('_suggestions', {text : item , value : this.source[i]});
-            }
-          }
-
-          if (this._suggestions.length > 0) {
-            this.$.suggestionsWrapper.style.display = 'block';
-          }
-        }
+        this._handleSuggestionsAux(value);
       }else{
         this.$.clear.style.display = 'none';
         this._suggestions = [];
+      }
+    },
+
+    /**
+     * Auxiliary event to handle the suggestions.
+     * 
+     * @param {string} event fired
+     */
+    _handleSuggestionsAux : function(value) {
+      var valueToProcess = value.toLowerCase();
+
+      // Shows the clear button.
+      this.$.clear.style.display = 'block';
+      
+      // Search for the word in the source properties.
+      if(this.source && this.source.length > 0){
+        this._suggestions = [];
+        var length = this.source.length
+        var hasSearchProperty = this.searchProperty != null;
+        for(var i = 0; i < length; i++){
+          var item = this.source[i];
+          if(hasSearchProperty){
+            item = this.source[i][this.searchProperty];
+          }
+          if(item.toLowerCase().includes(valueToProcess)){
+            // Adds the item to the suggestions list.
+            this.push('_suggestions', {text : item , valueToProcess : this.source[i]});
+          }
+        }
+
+        if (this._suggestions.length > 0) {
+          this.$.suggestionsWrapper.style.display = 'block';
+        }
       }
     },
 
@@ -458,6 +478,25 @@ Example:
 
       setTimeout(function() {
         self._hideSuggestionsWrapper();
+      }, 300);
+    },
+
+    _onFocus: function() {
+      if (this.displayElementsOnFocus && (this.value === '' || this.value === undefined)) {
+        this.value = '';
+        this._handleSuggestionsAux(this.value);
+      }
+    },
+
+    _onBlur: function(event) {
+      var self = this;
+
+      setTimeout(function() {
+        self._hideSuggestionsWrapper();
+
+        if (self.value === '') {
+          self.clear();
+        }
       }, 300);
     },
 
