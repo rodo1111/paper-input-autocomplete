@@ -454,7 +454,7 @@ Example:
           }
           if(item.toLowerCase().includes(valueToProcess)){
             // Adds the item to the suggestions list.
-            this.push('_suggestions', {text : item , valueToProcess : this.source[i]});
+            this.push('_suggestions', {text : item , value : this.source[i]});
           }
         }
 
