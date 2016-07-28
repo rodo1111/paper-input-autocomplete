@@ -70,33 +70,33 @@ Example:
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" 
-        label="{{label}}" 
-        on-keyup="_handleSuggestions" 
-        disabled="{{disabled}}" 
+      <paper-input id="input"
+        label="{{label}}"
+        on-keyup="_handleSuggestions"
+        disabled="{{disabled}}"
         invalid="{{invalid}}"
-        prevent-invalid-input="{{preventInvalidInput}}" 
-        allowedpattern="{{allowedPattern}}" 
-        type="{{type}}" 
+        prevent-invalid-input="{{preventInvalidInput}}"
+        allowedpattern="{{allowedPattern}}"
+        type="{{type}}"
         list="{{list}}"
-        pattern="{{pattern}}" 
-        required="{{required}}" 
-        maxlength="{{maxlength}}" 
-        error-message="{{errorMessage}}" 
+        pattern="{{pattern}}"
+        required="{{required}}"
+        maxlength="{{maxlength}}"
+        error-message="{{errorMessage}}"
         char-counter="{{charCounter}}"
-        auto-validate="{{autoValidate}}" 
-        validator="{{validator}}" 
-        autocomplete="{{autocomplete}}" 
+        auto-validate="{{autoValidate}}"
+        validator="{{validator}}"
+        autocomplete="{{autocomplete}}"
         autofocus="{{autofocus}}"
-        inputmode="{{inputmode}}" 
-        minlength="{{minlength}}" 
-        name="{{name}}" 
-        placeholder="{{placeholder}}" 
+        inputmode="{{inputmode}}"
+        minlength="{{minlength}}"
+        name="{{name}}"
+        placeholder="{{placeholder}}"
         readonly="{{readonly}}"
-        size="{{size}}" 
-        _aria-described-by="{{_ariaDescribedBy}}" 
-        value="{{inputValue}}" 
-        no-label-float="{{noLabelFloat}}" 
+        size="{{size}}"
+        _aria-described-by="{{_ariaDescribedBy}}"
+        value="{{inputValue}}"
+        no-label-float="{{noLabelFloat}}"
         always-float-label="{{alwaysFloatLabel}}"
         display-options-on-focus="{{displayOptionsOnFocus}}"
         on-focus="_onFocus"
@@ -133,7 +133,7 @@ Example:
       source: Array,
 
       /**
-       * `searchProperty` Property of the source objects that will be used to execute 
+       * `searchProperty` Property of the source objects that will be used to execute
        * the autocomplete feature
        */
       searchProperty: String,
@@ -416,7 +416,7 @@ Example:
 
     /**
      * Event fired when the user types in the input field.
-     * 
+     *
      * @param {string} event fired
      */
     _handleSuggestions : function(event) {
@@ -433,7 +433,7 @@ Example:
 
     /**
      * Auxiliary event to handle the suggestions.
-     * 
+     *
      * @param {string} event fired
      */
     _handleSuggestionsAux : function(value) {
@@ -441,7 +441,7 @@ Example:
 
       // Shows the clear button.
       this.$.clear.style.display = 'block';
-      
+
       // Search for the word in the source properties.
       if(this.source && this.source.length > 0){
         this._suggestions = [];
@@ -452,7 +452,7 @@ Example:
           if(hasSearchProperty){
             item = this.source[i][this.searchProperty];
           }
-          if(item.toLowerCase().includes(valueToProcess)){
+          if(item.toLowerCase().indexOf(valueToProcess) != -1){
             // Adds the item to the suggestions list.
             this.push('_suggestions', {text : item , value : this.source[i]});
           }
