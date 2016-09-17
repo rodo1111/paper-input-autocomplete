@@ -28,12 +28,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <button onclick="whichVegetable()">Which vegetable?</button>
     <button onclick="clearVegetable()">Clear the selected vegetable</button>
 
+    <br/><br/><br/><br/>
+
+    <paper-input-autocomplete id="grains" label="Grains" search-property="name" autocomplete-search-length="2"></paper-input-autocomplete>
+    <button onclick="whichGrain()">Which grain?</button>
+    <button onclick="clearGrain()">Clear the selected grain</button>
+
     <script>
       document.getElementById('fruits').source = ['Apple', 'Orange', 'Bananas'];
       document.getElementById('vegetables').source = [
         {name: 'Cabbage', scientificName: 'Brassica oleracea'},
         {name: 'Carrot', scientificName: 'Daucus carota'},
-        {name: 'Potato', scientificName: 'Solanum tuberosum'},
+        {name: 'Potato', scientificName: 'Solanum tuberosum'}
+      ];
+      document.getElementById('grains').source = [
+        {name: 'Rice'},
+        {name: 'Corn'},
+        {name: 'Wheat'},
+        {name: 'Oat'},
       ];
 
       function whichFruit() {
@@ -50,6 +62,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       function clearVegetable() {
         document.getElementById('vegetables').clear();
+      }
+
+      function whichGrain() {
+        alert(JSON.stringify(document.getElementById('grains').getValue()));
+      }
+
+      function clearGrain() {
+        document.getElementById('grains').clear();
       }
     </script>
 

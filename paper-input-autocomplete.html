@@ -139,6 +139,15 @@ Example:
       searchProperty: String,
 
       /**
+       * `autocompleteSearchLength` Number that determines when the autocomplete will start
+       * searching for matches
+       */
+      autocompleteSearchLength: {
+        type: Number,
+        value: 1
+      },
+
+      /**
        * `value` Selected object from the suggestions
        */
       value: {
@@ -423,9 +432,9 @@ Example:
       this.value = this.$.input.value;
       var value = event.target.value;
 
-      if(value && value.length > 0){
+      if (value && value.length > 0) {
         this._handleSuggestionsAux(value);
-      }else{
+      } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
       }
@@ -437,29 +446,32 @@ Example:
      * @param {string} event fired
      */
     _handleSuggestionsAux : function(value) {
-      var valueToProcess = value.toLowerCase();
+      // Check if the given value should be processed according to the min length for search
+      if (value.length >= this.autocompleteSearchLength) {
+        var valueToProcess = value.toLowerCase();
 
-      // Shows the clear button.
-      this.$.clear.style.display = 'block';
-      
-      // Search for the word in the source properties.
-      if(this.source && this.source.length > 0){
-        this._suggestions = [];
-        var length = this.source.length
-        var hasSearchProperty = this.searchProperty != null;
-        for(var i = 0; i < length; i++){
-          var item = this.source[i];
-          if(hasSearchProperty){
-            item = this.source[i][this.searchProperty];
+        // Shows the clear button.
+        this.$.clear.style.display = 'block';
+        
+        // Search for the word in the source properties.
+        if (this.source && this.source.length > 0) {
+          this._suggestions = [];
+          var length = this.source.length
+          var hasSearchProperty = this.searchProperty != null;
+          for(var i = 0; i < length; i++){
+            var item = this.source[i];
+            if(hasSearchProperty){
+              item = this.source[i][this.searchProperty];
+            }
+            if(item.toLowerCase().includes(valueToProcess)){
+              // Adds the item to the suggestions list.
+              this.push('_suggestions', {text : item , value : this.source[i]});
+            }
           }
-          if(item.toLowerCase().includes(valueToProcess)){
-            // Adds the item to the suggestions list.
-            this.push('_suggestions', {text : item , value : this.source[i]});
-          }
-        }
 
-        if (this._suggestions.length > 0) {
-          this.$.suggestionsWrapper.style.display = 'block';
+          if (this._suggestions.length > 0) {
+            this.$.suggestionsWrapper.style.display = 'block';
+          }
         }
       }
     },
@@ -484,6 +496,7 @@ Example:
     _onFocus: function() {
       if (this.displayOptionsOnFocus && (this.value === '' || this.value === undefined)) {
         this.value = '';
+        this.autocompleteSearchLength = 0;
         this._handleSuggestionsAux(this.value);
       }
     },
